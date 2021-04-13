@@ -41,6 +41,8 @@ if(isset($_POST["username"])){
 						</label>
 					</div>
 					<button type="submit" class="btn btn-primary">Sign in</button>
+					<hr>
+					<p>Don't have an account? <a href="register.php">Sign Up</a></p>
 				</form>
 
 			</div>

@@ -6,4 +6,8 @@ class Install{
 		echo "Installing...";
 	}
 
+	public function insertUserTable(){
+		$sql = "";
+	}
+
 }
