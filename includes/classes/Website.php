@@ -16,23 +16,23 @@ class Website{
 	}
 
 	function primary_color(){
-		echo $this->config->site->primary;
+		echo $this->config->site->color->primary;
 	}
 
 	function text_color(){
-		echo $this->config->site->text;
+		echo $this->config->site->color->text;
 	}
 
 	function navbar_color(){
-		echo $this->config->site->navbar;
+		echo $this->config->site->color->navbar;
 	}
 
 	function menu_color(){
-		echo $this->config->site->menu;
+		echo $this->config->site->color->menu;
 	}
 
 	function title_color(){
-		echo $this->config->site->title;
+		echo $this->config->site->color->title;
 	}
 
 }

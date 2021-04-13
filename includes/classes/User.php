@@ -6,13 +6,20 @@ class User {
 	public function __construct($con, $username){
 		$this->con = $con;
 		// please add security
-		$sql = "SELECT * FROM users WHERE username = '$username'";
+		$sql = "SELECT username, firstname, lastname, email FROM users WHERE username = '$username'";
 		$query = $this->con->query($sql);
 		$this->data = $query->fetch_assoc();
+
+		$_SESSION["userLoggedIn"] = $this->data;
 	}
 
-	public function isLoggedIn(){
+	public static function isLoggedIn(){
 		return isset($_SESSION["userLoggedIn"]);
+	}
+
+	public static function getUser(){
+		if(User::isLoggedIn())
+			return $_SESSION["userLoggedIn"];
 	}
 
 }
@@ -20,6 +27,10 @@ class User {
 class Account {
 	private $con;
 	private $error = array();
+
+	public static $loginFailed = "loginFailed";
+	public static $invalidEmail = "invalidEmail";
+	public static $invalidUsername = "invalidUsername";
 
 	public function __construct($con){
 		$this->con = $con;
@@ -32,8 +43,13 @@ class Account {
 		$query = $this->con->query($sql);
 		if($query->num_rows >= 1)
 			return new User($this->con, $username);
-		else
+		else{
+			$this->error["loginFailed"] = '<div class="alert alert-danger alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Invalid Credentials!</strong> Please check your info and try again.
+			</div>';
 			return false;
+		}
 	}
 
 	public function register($username, $password, $firstname, $lastname, $email){
@@ -59,7 +75,10 @@ class Account {
 		$sql = "SELECT username FROM users WHERE username = '$username'";
 		$query = $this->con->query($sql);
 		if($query->num_rows > 0)
-			array_push($error, "Username [$username] is already registered.");
+			$this->error["invalidUsername"] = '<div class="alert alert-danger alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Oh no!</strong> Username [$username] is already registered.
+			</div>';
 	}
 
 	public function validateEmail($email){
@@ -67,7 +86,15 @@ class Account {
 		$sql = "SELECT email FROM users WHERE email = '$email'";
 		$query = $this->con->query($sql);
 		if($query->num_rows > 0)
-			array_push($error, "Email [$email] is already registered.");
+			$this->error["invalidEmail"] = '<div class="alert alert-danger alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Oh no!</strong> Email [$email] is already registered.
+			</div>';
 	}
-	
+
+	public function getError($index){
+		if(!empty($this->error[$index]))
+			return $this->error[$index];
+	}
+
 }
