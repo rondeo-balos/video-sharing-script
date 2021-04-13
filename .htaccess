@@ -1,0 +1,4 @@
+<FilesMatch "\.(htaccess|xml)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>

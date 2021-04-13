@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config>
+	<host>localhost</host>
+	<username>root</username>
+	<password></password>
+	<database>test</database>
+	<site>
+		<name>ViDEO</name>
+		<tagline>Video Sharing Website</tagline>
+		<color>
+			<primary>#8CA9D3</primary>
+			<text>#333333</text>
+			<navbar>#F0EFF4</navbar>
+			<menu>#F26659</menu>
+			<title>#F26659</title>
+		</color>
+	</site>
+</config>
