@@ -23,11 +23,15 @@ if(isset($_POST["username"])){
 			<!-- Modal body -->
 			<div class="modal-body">
 
-				<?php echo $account->getError(Account::$loginFailed) ?>
+				<?php
+					$before = '<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button>';
+					$after = '</div>';
+					echo $account->getError(Account::$loginFailed, $before, $after);
+				?>
 				<form method="post" class="needs-validation" novalidate>
 					<div class="form-group">
 						<label for="uname">Username:</label>
-							<input type="text" class="form-control" id="uname" placeholder="Enter username" name="username" required>
+							<input type="text" class="form-control" id="uname" placeholder="Enter username" name="username" value="<?php echo htmlspecialchars($_POST['username'] ?? '', ENT_QUOTES); ?>" required>
 						<div class="invalid-feedback">Please fill out this field.</div>
 					</div>
 					<div class="form-group">

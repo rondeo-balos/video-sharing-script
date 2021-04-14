@@ -3,6 +3,7 @@
 require_once "./includes/config.php";
 require_once "./includes/classes/Website.php";
 require_once "./includes/classes/User.php";
+require_once "./includes/classes/Recommended.php";
 
 $website = new Website($config);
 ?>

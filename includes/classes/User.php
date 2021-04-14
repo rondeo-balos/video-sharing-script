@@ -29,8 +29,7 @@ class Account {
 	private $error = array();
 
 	public static $loginFailed = "loginFailed";
-	public static $invalidEmail = "invalidEmail";
-	public static $invalidUsername = "invalidUsername";
+	public static $registerFailed = "registerFailed";
 
 	public function __construct($con){
 		$this->con = $con;
@@ -44,10 +43,7 @@ class Account {
 		if($query->num_rows >= 1)
 			return new User($this->con, $username);
 		else{
-			$this->error["loginFailed"] = '<div class="alert alert-danger alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<strong>Invalid Credentials!</strong> Please check your info and try again.
-			</div>';
+			$this->error["loginFailed"] = '<strong>Invalid Credentials!</strong> Please check your info and try again.';
 			return false;
 		}
 	}
@@ -56,8 +52,10 @@ class Account {
 		$this->validateUsername($username);
 		$this->validateEmail($email);
 
+		$password = md5($password);
+
 		if(empty($this->error))
-			return insertUser($username, $password, $firstname, $lastname, $email);
+			return $this->insertUser($username, $password, $firstname, $lastname, $email);
 		else
 			return false;
 	}
@@ -75,10 +73,7 @@ class Account {
 		$sql = "SELECT username FROM users WHERE username = '$username'";
 		$query = $this->con->query($sql);
 		if($query->num_rows > 0)
-			$this->error["invalidUsername"] = '<div class="alert alert-danger alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<strong>Oh no!</strong> Username [$username] is already registered.
-			</div>';
+			$this->error["registerFailed"] = '<strong>Oh no!</strong> Username ['.$username.'] is already registered.';
 	}
 
 	public function validateEmail($email){
@@ -86,15 +81,12 @@ class Account {
 		$sql = "SELECT email FROM users WHERE email = '$email'";
 		$query = $this->con->query($sql);
 		if($query->num_rows > 0)
-			$this->error["invalidEmail"] = '<div class="alert alert-danger alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<strong>Oh no!</strong> Email [$email] is already registered.
-			</div>';
+			$this->error["registerFailed"] = '<strong>Oh no!</strong> Email ['.$email.'] is already registered.';
 	}
 
-	public function getError($index){
+	public function getError($index, $before, $after){
 		if(!empty($this->error[$index]))
-			return $this->error[$index];
+			return $before.$this->error[$index].$after;
 	}
 
 }
