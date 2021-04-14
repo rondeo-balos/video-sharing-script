@@ -44,34 +44,36 @@ $website = new Website($config);
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+			<div class="container">
+				<!-- Brand/logo -->
+				<a class="navbar-brand" href="index.php">
+					<?php $website->title() ?>
+				</a>
 
-			<!-- Brand/logo -->
-			<a class="navbar-brand" href="#">
-				<?php $website->title() ?>
-			</a>
+				<form class="form-inline ml-auto mr-auto" action="/action_page.php">
+					<input class="form-control" type="text" placeholder="Search">
+					<button class="btn btn-success" type="submit">Search</button>
+				</form>
 
-			<form class="form-inline ml-auto mr-auto" action="/action_page.php">
-				<input class="form-control" type="text" placeholder="Search">
-				<button class="btn btn-success" type="submit">Search</button>
-			</form>
-
-			<ul class="navbar-nav">
-				
-				<?php if(User::isLoggedIn()): ?>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Welcome <?php echo User::getUser()["username"]; ?></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="logout.php">Logout</a>
-					</li>
-				<?php else: ?>
-					<li class="nav-item">
-						<a class="nav-link" href="login.php">Login</a>
-					</li>
-				<?php endif; ?>
-				
-			</ul>
-
+				<ul class="navbar-nav">
+					
+					<?php if(User::isLoggedIn()): ?>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="accountPopup" data-toggle="dropdown"><?php echo User::getProfileAvatar("40",array("class"=>"rounded-circle")); ?></a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" href="http://en.gravatar.com/">Change Profile Picture</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="logout.php">Logout</a>
+							</div>
+						</li>
+					<?php else: ?>
+						<li class="nav-item">
+							<a class="nav-link" href="login.php"><?php echo User::getProfileAvatar("40",array("class"=>"rounded-circle")); ?></a>
+						</li>
+					<?php endif; ?>
+					
+				</ul>
+			</div>
 		</nav>
 
 		<div class="container" id="content">

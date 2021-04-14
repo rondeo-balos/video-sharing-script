@@ -22,6 +22,21 @@ class User {
 			return $_SESSION["userLoggedIn"];
 	}
 
+	public static function getProfileAvatar($size = "40", $attr = array()){
+		$url = "https://www.gravatar.com/avatar/";
+		$default = "https://www.gravatar.com/avatar/?d=mp&s=$size";
+		if(User::isLoggedIn())
+			$url .= md5( strtolower( trim( User::getUser()["email"] ) ) ) . "?s=$size";
+		else
+			$url = $default;
+		$url = "<img src='$url'";
+		foreach ($attr as $key => $val) {
+			$url .= " $key='$val'";
+		}
+		$url .= " />";
+		return $url;
+	}
+
 }
 
 class Account {
