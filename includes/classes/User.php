@@ -18,15 +18,15 @@ class User {
 	}
 
 	public static function getUser(){
-		if(User::isLoggedIn())
+		if(self::isLoggedIn())
 			return $_SESSION["userLoggedIn"];
 	}
 
 	public static function getProfileAvatar($size = "40", $attr = array()){
 		$url = "https://www.gravatar.com/avatar/";
 		$default = "https://www.gravatar.com/avatar/?d=mp&s=$size";
-		if(User::isLoggedIn())
-			$url .= md5( strtolower( trim( User::getUser()["email"] ) ) ) . "?s=$size";
+		if(self::isLoggedIn())
+			$url .= md5( strtolower( trim( self::getUser()["email"] ) ) ) . "?s=$size";
 		else
 			$url = $default;
 		$url = "<img src='$url'";
